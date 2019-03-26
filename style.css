@@ -20,6 +20,7 @@ body{
     width:28px;
     height:28px;
     position:absolute;
+    transform: rotate(180deg);
 }
 .bullet{
     background: url('1942.gif');

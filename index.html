@@ -26,26 +26,119 @@
 
 	<script type="text/javascript">
 	
-			var hero = {
+		var hero = {
 			x: 300,
 			y: 300
 		}
+		var enemies = [
+			{x:50,y:100},
+			{x:250,y:50},
+			{x:450,y:50},
+			{x:300,y:100},
+			{x:500,y:10},
+			{x:50,y:200},
+			{x:400,y:100}
+		]
+
+		var bullets = [];
+
 
 		function displayHero(){
 			document.getElementById('hero').style['top'] = hero.y + 'px';
 			document.getElementById('hero').style['left'] = hero.x + 'px';
 		}
 
-		displayHero();
+		function displayEnemies(){
+			var output = "";
+			for(i=0;i<enemies.length;i++){
+				output += "<div class='enemy1' style='top:" + enemies[i].y + "px; left:" + enemies[i].x + "px;'></div>"
+			}
+			document.getElementById('enemies').innerHTML = output;
+		}
+
+		function moveEnemies(){
+			// console.log('entered moveEnemies')
+			for(i=0;i<enemies.length;i++){
+				enemies[i].y += 5;
+
+				if(enemies[i].y > 530){
+					enemies[i].y = 10;
+					enemies[i].x = Math.random()*500;
+				}
+			}
+			displayEnemies();
+		}
+
+		
+
+		function displayBullets(){
+			// console.log('entered displayBullets');
+			var output = "";
+			for(var i=0;i<bullets.length;i++){
+				output += "<div class='bullet' style='top:" + bullets[i].y + "px; left:" + bullets[i].x + "px;'></div>"
+				// console.log(output);
+			}
+			document.getElementById('bullets').innerHTML = output;
+		}
+
+		function moveBullets(){
+			// console.log('entered moveEnemies')
+			for(i=0;i<bullets.length;i++){
+				bullets[i].y -= 5;
+
+				if(bullets[i].y < 0){
+					bullets[i] = bullets[bullets.length-1];
+					bullets.pop();
+				}
+			};
+			displayBullets();
+		}
+
+		document.onkeydown = function(e){
+			// console.log(e.keyCode);
+			if(e.keyCode == 37){ // left
+				hero.x -=5;
+			}
+			else if(e.keyCode == 39){ //right
+				hero.x += 5;
+			}
+			else if(e.keyCode == 38){ //up
+				hero.y -= 5;
+			}
+			else if(e.keyCode == 40){ //down
+				hero.y += 5;
+			}
+			else if(e.keyCode == 32){ //spacebar
+				bullets.push({x:hero.x+5,y:hero.y-5})
+				displayBullets();
+				// console.log('added bullet');
+			}
+			
+
+			displayHero();
+		}
+
+		function gameLoop(){
+			// console.log('looped');
+			displayHero();
+			moveEnemies();
+			displayEnemies();
+			moveBullets();
+			displayBullets();
+
+
+			setTimeout(gameLoop, 20);
+		}
+		gameLoop();
 
 	</script>
 
 <!-- 
-	1. Display hero
-	2. Make hero move u/d/l/r
-	3. Display all enemies
-	4. Make enemies move
-	5. When spacebar is pressed, have the hero shoot a bullet
+	1. Display hero DONE
+	2. Make hero move u/d/l/r DONE
+	3. Display all enemies DONE
+	4. Make enemies move DONE
+	5. When spacebar is pressed, have the hero shoot a bullet DONE
  -->
 </body>
 </html>
